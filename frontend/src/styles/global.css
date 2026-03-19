@@ -1,0 +1,109 @@
+/**
+ * Scholia Global Styles
+ * See DESIGN_SYSTEM.md for full documentation
+ */
+
+:root {
+  /* Backgrounds */
+  --bg: #fdfaf8;
+  --bg-card: #ffffff;
+  --bg-warm: #f9f3ef;
+
+  /* Text */
+  --text: #3d2f2a;
+  --text-secondary: #6b574f;
+  --text-muted: #a08a80;
+
+  /* Borders */
+  --border: #e8dfd9;
+
+  /* Accent - Terracotta */
+  --accent: #c45d3a;
+  --accent-light: #fce9e2;
+  --accent-warm: #a64b2d;
+
+  /* Typography */
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: 'Lora', Georgia, serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+html, body {
+  /* Use dvh (dynamic viewport height) to account for mobile browser chrome */
+  /* Falls back to vh for browsers that don't support dvh */
+  height: 100vh;
+  height: 100dvh;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* overflow handled by individual page components */
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-warm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Text selection */
+::selection {
+  background: var(--accent-light);
+  color: var(--accent-warm);
+}
+
+/* Focus outlines */
+*:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+button:focus-visible {
+  outline-offset: -2px;
+}
+
+/* Utility classes */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

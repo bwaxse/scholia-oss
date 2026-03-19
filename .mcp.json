@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "auggie-mcp": {
+      "type": "stdio",
+      "command": "auggie",
+      "args": [
+        "--mcp",
+        "--mcp-auto-workspace"
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+# Web Backend Dependencies for Scholia
+# Phase A: FastAPI Backend
+
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# AI/ML
+anthropic
+google-genai
+
+# PDF Processing
+pymupdf
+
+# File Upload
+python-multipart
+
+# Configuration
+pydantic-settings
+python-dotenv
+
+# Database
+asyncpg
+
+# Zotero Integration
+pyzotero
+
+# Notion Integration
+notion-client
+aiohttp
+
+# HTTP Client for API calls (CrossRef, PubMed)
+httpx
+
+# Retry Logic
+tenacity

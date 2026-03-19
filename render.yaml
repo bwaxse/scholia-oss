@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: scholia
+    runtime: python
+    plan: free
+    buildCommand: bash build.sh
+    startCommand: uvicorn web.api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Manual entry in Render dashboard
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scholia-db
+          property: connectionString
+      - key: SESSION_SECRET_KEY
+        sync: false  # Manual entry in Render dashboard
+      # Note: Zotero and Notion user credentials are stored per-user in database
+      # Notion OAuth credentials (app-wide, for OAuth flow):
+      - key: NOTION_CLIENT_ID
+        sync: false
+      - key: NOTION_CLIENT_SECRET
+        sync: false
+      - key: NOTION_REDIRECT_URI
+        sync: false  # https://scholia.fyi/api/notion/callback
+      - key: DEBUG
+        value: false
+
+databases:
+  - name: scholia-db
+    databaseName: scholia
+    plan: free
+    ipAllowList: []  # Allow connections from anywhere (Render manages security)
