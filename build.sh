@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit on error
 
-echo "===== Scholia Build Script for Render ====="
+echo "===== Scholia Build Script ====="
 
 # Install Python dependencies
 echo "Installing Python dependencies..."

@@ -349,7 +349,7 @@ export class SupportPage extends LitElement {
         <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
           <a href="/" @click=${() => this.menuOpen = false}>Home</a>
           <a href="/manifesto" @click=${() => this.menuOpen = false}>Manifesto</a>
-          <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
+          
           <a href="/" @click=${() => this.menuOpen = false}>Open App</a>
         </div>
       `;
@@ -359,7 +359,7 @@ export class SupportPage extends LitElement {
       <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
         <a href="/" @click=${() => this.menuOpen = false}>Home</a>
         <a href="/manifesto" @click=${() => this.menuOpen = false}>Manifesto</a>
-        <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
+        
       </div>
     `;
   }
@@ -371,7 +371,7 @@ export class SupportPage extends LitElement {
       return html`<a href="/" class="btn btn-primary">Open App</a>`;
     }
 
-    return html`<a href="/auth?mode=signup" class="btn btn-primary">Get Started</a>`;
+    return html`<a href="/" class="btn btn-primary">Open App</a>`;
   }
 
   render() {
@@ -382,7 +382,6 @@ export class SupportPage extends LitElement {
           <nav>
             <a href="/">Home</a>
             <a href="/manifesto">Manifesto</a>
-            <a href="/pricing">Pricing</a>
             ${this.renderHeaderCTA()}
           </nav>
           <button class="hamburger" @click=${this.toggleMenu}>
@@ -441,7 +440,7 @@ export class SupportPage extends LitElement {
 
       <footer>
         <p>
-          <a href="/">Home</a> · <a href="/manifesto">Manifesto</a> · <a href="/pricing">Pricing</a> · Built for researchers who think deeply.
+          <a href="/">Home</a> · <a href="/manifesto">Manifesto</a> · Built for researchers who think deeply.
         </p>
       </footer>
     `;

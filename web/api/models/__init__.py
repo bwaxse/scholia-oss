@@ -10,8 +10,6 @@ from .session import (
     SessionDetail,
     ConversationMessage,
     SessionMetadata,
-    LinkedInPostEndings,
-    LinkedInPostResponse,
     ExistingSessionInfo,
     DuplicateCheckResponse,
 )
@@ -65,8 +63,6 @@ __all__ = [
     "SessionDetail",
     "ConversationMessage",
     "SessionMetadata",
-    "LinkedInPostEndings",
-    "LinkedInPostResponse",
     "ExistingSessionInfo",
     "DuplicateCheckResponse",
     # Query models

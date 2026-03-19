@@ -710,7 +710,7 @@ export class AppRoot extends LitElement {
         this.errorActionHref = '/settings';
       } else if (err instanceof ApiError && err.status === 400 && err.details?.error === 'PAGE_LIMIT_EXCEEDED') {
         this.error = err.details.message ?? err.message;
-        this.errorActionHref = '/pricing';
+        this.errorActionHref = '/';
       } else if (err instanceof ApiError) {
         this.error = err.message;
       } else {

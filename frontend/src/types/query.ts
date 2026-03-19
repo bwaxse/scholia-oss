@@ -19,16 +19,3 @@ export interface QueryResponse {
     thinking_tokens?: number;
   };
 }
-
-export interface LinkedInPostEndings {
-  question: string;
-  declarative: string;
-  forward_looking: string;
-}
-
-export interface LinkedInPostResponse {
-  hook: string;
-  body: string;
-  endings: LinkedInPostEndings;
-  full_post_options: string[];
-}

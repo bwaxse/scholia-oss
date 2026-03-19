@@ -412,7 +412,7 @@ export class ManifestoPage extends LitElement {
       return html`
         <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
           <a href="/" @click=${() => this.menuOpen = false}>Home</a>
-          <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
+          
           <a href="/" @click=${() => this.menuOpen = false}>Open App</a>
         </div>
       `;
@@ -421,9 +421,9 @@ export class ManifestoPage extends LitElement {
     return html`
       <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
         <a href="/" @click=${() => this.menuOpen = false}>Home</a>
-        <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
-        <a href="/auth?mode=signin" @click=${() => this.menuOpen = false}>Sign in</a>
-        <a href="/auth?mode=signup" @click=${() => this.menuOpen = false}>Sign up</a>
+        
+        
+        
       </div>
     `;
   }
@@ -435,17 +435,11 @@ export class ManifestoPage extends LitElement {
       return html`<a href="/" class="btn btn-primary">Open App</a>`;
     }
 
-    return html`<a href="/auth?mode=signup" class="btn btn-primary">Get Started</a>`;
+    return html`<a href="/" class="btn btn-primary">Open App</a>`;
   }
 
   private renderSignatureCTA() {
-    const { isAuthenticated } = this.authState;
-
-    if (isAuthenticated) {
-      return html`<a href="/" class="cta-btn">Open App</a>`;
-    }
-
-    return html`<a href="/auth?mode=signup" class="cta-btn">Get Started</a>`;
+    return html`<a href="/" class="cta-btn">Open App</a>`;
   }
 
   render() {
@@ -455,8 +449,6 @@ export class ManifestoPage extends LitElement {
           <a href="/" class="logo"><img src="/logo_small.png?v=2" alt="Scholia" />Scholia.fyi</a>
           <nav>
             <a href="/">Home</a>
-            <a href="/pricing">Pricing</a>
-            ${!this.authState.isAuthenticated ? html`<a href="/auth?mode=signin">Sign in</a>` : ''}
             ${this.renderHeaderCTA()}
           </nav>
           <button class="hamburger" @click=${this.toggleMenu}>
@@ -538,7 +530,7 @@ export class ManifestoPage extends LitElement {
 
       <footer>
         <p>
-          <a href="/">Home</a> · <a href="/pricing">Pricing</a> · Built for researchers who think deeply.
+          <a href="/">Home</a> · Built for researchers who think deeply.
         </p>
       </footer>
     `;

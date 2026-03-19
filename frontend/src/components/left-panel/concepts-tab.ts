@@ -1,8 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { api, ApiError } from '../../services/api';
-import { authService } from '../../services/auth';
-import type { LinkedInPostResponse } from '../../types/query';
 import type {
   NotionProject,
   NotionProjectContext
@@ -52,13 +50,6 @@ export class ConceptsTab extends LitElement {
   @state() private savingToZotero = false;
   @state() private zoteroSaveSuccess = false;
   @state() private showReextractConfirm = false;
-  @state() private generatingLinkedIn = false;
-  @state() private linkedInPost: LinkedInPostResponse | null = null;
-  @state() private showLinkedInModal = false;
-  @state() private selectedEnding: 'question' | 'declarative' | 'forward_looking' = 'question';
-  @state() private showLinkedInFocusDialog = false;
-  @state() private linkedInFocus = '';
-  @state() private generatingFocus = false;
 
   // Notion export state
   @state() private showNotionModal = false;
@@ -83,7 +74,6 @@ export class ConceptsTab extends LitElement {
 
   // Model selection state
   @state() private selectedInsightsModel: 'sonnet' | 'haiku' | 'gemini-flash' | 'gemini-pro' = 'gemini-flash';
-  @state() private selectedLinkedInModel: 'sonnet' | 'haiku' | 'gemini-flash' | 'gemini-pro' = 'gemini-flash';
   @state() private selectedNotionModel: 'sonnet' | 'haiku' | 'gemini-flash' | 'gemini-pro' = 'gemini-flash';
 
   static styles = css`
@@ -548,247 +538,6 @@ export class ConceptsTab extends LitElement {
       gap: 12px;
     }
 
-    /* LinkedIn Focus Dialog */
-    .linkedin-focus-dialog {
-      max-width: 500px;
-    }
-
-    .focus-instructions {
-      font-size: 14px;
-      color: #666;
-      margin: 0 0 12px 0;
-    }
-
-    .focus-input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #e8dfd9;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      line-height: 1.5;
-      resize: vertical;
-      box-sizing: border-box;
-    }
-
-    .focus-input:focus {
-      outline: none;
-      border-color: #3d2f2a;
-    }
-
-    .focus-hint {
-      font-size: 12px;
-      color: #999;
-      margin: 8px 0 0 0;
-      font-style: italic;
-    }
-
-    .cancel-btn {
-      padding: 10px 20px;
-      background: #f9f3ef;
-      color: #666;
-      border: 1px solid #e8dfd9;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .cancel-btn:hover {
-      background: #e8dfd9;
-    }
-
-    .generate-btn {
-      padding: 10px 20px;
-      background: #3d2f2a;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .generate-btn:hover:not(:disabled) {
-      background: #2d211c;
-    }
-
-    .generate-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* LinkedIn Modal Styles */
-    .linkedin-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .linkedin-dialog {
-      background: white;
-      border-radius: 8px;
-      padding: 24px;
-      max-width: 600px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .linkedin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .linkedin-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #666;
-      padding: 0;
-      line-height: 1;
-    }
-
-    .close-btn:hover {
-      color: #333;
-    }
-
-    .post-preview {
-      background: #f9f3ef;
-      border: 1px solid #e8dfd9;
-      border-radius: 6px;
-      padding: 16px;
-      margin-bottom: 16px;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      color: #333;
-    }
-
-    .post-preview .paper-link {
-      background: #fff3cd;
-      border: 1px dashed #ffc107;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-weight: 500;
-    }
-
-    .ending-selector {
-      margin-bottom: 20px;
-    }
-
-    .ending-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
-    }
-
-    .ending-options {
-      display: flex;
-      gap: 8px;
-    }
-
-    .ending-option {
-      flex: 1;
-      padding: 8px 12px;
-      background: #f0f0f0;
-      border: 2px solid transparent;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      text-align: center;
-      transition: all 0.2s;
-    }
-
-    .ending-option:hover {
-      background: #e8dfd9;
-    }
-
-    .ending-option.selected {
-      background: #e3f2fd;
-      border-color: #3d2f2a;
-      color: #3d2f2a;
-      font-weight: 500;
-    }
-
-    .linkedin-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-    }
-
-    .copy-btn {
-      padding: 10px 20px;
-      background: #3d2f2a;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-
-    .copy-btn:hover {
-      background: #1557b0;
-    }
-
-    .copy-btn.copied {
-      background: #059669;
-    }
-
-    .linkedin-action {
-      padding: 16px;
-      text-align: center;
-    }
-
-    .share-to-linkedin-btn {
-      padding: 8px 16px;
-      background: #0a66c2;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-
-    .share-to-linkedin-btn:hover {
-      background: #084d92;
-    }
-
-    .share-to-linkedin-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
-    .share-to-linkedin-btn.loading {
-      opacity: 0.7;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
     /* Notion Export Styles */
     .add-to-notion-btn {
       padding: 8px 16px;
@@ -1165,9 +914,8 @@ export class ConceptsTab extends LitElement {
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
       }
 
-      /* Notion and LinkedIn modals on mobile */
-      .notion-dialog,
-      .linkedin-dialog {
+      /* Notion modal on mobile */
+      .notion-dialog {
         /* Account for: nav (44px) + reextract-container (~100px) + safe area + margins */
         max-height: calc(100vh - 144px - env(safe-area-inset-bottom, 0px) - 44px);
         margin-bottom: calc(144px + env(safe-area-inset-bottom, 0px));
@@ -1245,7 +993,6 @@ export class ConceptsTab extends LitElement {
     if (model === 'gemini-pro' && !this.modelAccess.gemini_pro) return;
     // Update all model selections when one changes
     this.selectedInsightsModel = model;
-    this.selectedLinkedInModel = model;
     this.selectedNotionModel = model;
   }
 
@@ -1275,99 +1022,6 @@ export class ConceptsTab extends LitElement {
       }
     } finally {
       this.savingToZotero = false;
-    }
-  }
-
-  private async handleGenerateLinkedIn() {
-    if (!this.sessionId) {
-      this.error = 'Cannot generate LinkedIn post: missing session';
-      return;
-    }
-
-    // Step 1: Generate focus/direction
-    this.generatingFocus = true;
-    this.error = '';
-
-    try {
-      const response = await api.generateLinkedInPostFocus(this.sessionId, this.selectedLinkedInModel);
-      this.linkedInFocus = response.focus;
-      this.showLinkedInFocusDialog = true;
-    } catch (err) {
-      console.error('Failed to generate post focus:', err);
-      if (err instanceof ApiError) {
-        this.error = `Failed to generate post focus: ${err.message}`;
-      } else {
-        this.error = 'Failed to generate post focus. Please try again.';
-      }
-    } finally {
-      this.generatingFocus = false;
-    }
-  }
-
-  private async handleGeneratePostWithFocus() {
-    if (!this.sessionId) {
-      this.error = 'Cannot generate LinkedIn post: missing session';
-      return;
-    }
-
-    // Step 2: Generate post with user-edited focus
-    this.showLinkedInFocusDialog = false;
-    this.generatingLinkedIn = true;
-    this.error = '';
-
-    try {
-      const post = await api.generateLinkedInPost(this.sessionId, this.selectedLinkedInModel, this.linkedInFocus);
-      this.linkedInPost = post;
-      this.showLinkedInModal = true;
-      this.selectedEnding = 'question'; // Reset to default
-    } catch (err) {
-      console.error('Failed to generate LinkedIn post:', err);
-      if (err instanceof ApiError) {
-        this.error = `Failed to generate LinkedIn post: ${err.message}`;
-      } else {
-        this.error = 'Failed to generate LinkedIn post. Please try again.';
-      }
-    } finally {
-      this.generatingLinkedIn = false;
-    }
-  }
-
-  private handleCloseFocusDialog() {
-    this.showLinkedInFocusDialog = false;
-    // Don't clear linkedInFocus - preserve the draft for potential re-editing
-  }
-
-  private handleCloseLinkedInModal() {
-    this.showLinkedInModal = false;
-  }
-
-  private handleSelectEnding(ending: 'question' | 'declarative' | 'forward_looking') {
-    this.selectedEnding = ending;
-  }
-
-  private async handleCopyPost() {
-    if (!this.linkedInPost) return;
-
-    // Get the selected ending index
-    const endingIndex = this.selectedEnding === 'question' ? 0 : this.selectedEnding === 'declarative' ? 1 : 2;
-    const fullPost = this.linkedInPost.full_post_options[endingIndex];
-
-    try {
-      await navigator.clipboard.writeText(fullPost);
-
-      // Show visual feedback
-      const button = this.shadowRoot?.querySelector('.copy-btn');
-      if (button) {
-        button.classList.add('copied');
-        button.textContent = 'Copied!';
-        setTimeout(() => {
-          button.classList.remove('copied');
-          button.textContent = 'Copy to Clipboard';
-        }, 2000);
-      }
-    } catch (err) {
-      console.error('Failed to copy to clipboard:', err);
-      this.error = 'Failed to copy to clipboard';
     }
   }
 
@@ -1688,105 +1342,6 @@ export class ConceptsTab extends LitElement {
     `;
   }
 
-  private renderLinkedInFocusDialog() {
-    if (!this.showLinkedInFocusDialog) return '';
-
-    return html`
-      <div class="modal-overlay" @click=${(e: Event) => e.target === e.currentTarget && this.handleCloseFocusDialog()}>
-        <div class="modal-content linkedin-focus-dialog">
-          <div class="modal-header">
-            <h3>Set Post Direction</h3>
-            <button class="close-btn" @click=${this.handleCloseFocusDialog}>×</button>
-          </div>
-
-          <div class="modal-body">
-            <p class="focus-instructions">
-              Edit this to focus the LinkedIn post on what you found most interesting:
-            </p>
-            <textarea
-              class="focus-input"
-              .value=${this.linkedInFocus}
-              @input=${(e: Event) => this.linkedInFocus = (e.target as HTMLTextAreaElement).value}
-              placeholder="What should the post focus on?"
-              rows="3"
-            ></textarea>
-            <p class="focus-hint">
-              For example: "The paper shows VZV vaccination reduces dementia risk, but only in females."
-            </p>
-          </div>
-
-          <div class="modal-footer">
-            <button class="cancel-btn" @click=${this.handleCloseFocusDialog}>Cancel</button>
-            <button
-              class="generate-btn"
-              @click=${this.handleGeneratePostWithFocus}
-              ?disabled=${this.generatingLinkedIn || !this.linkedInFocus.trim()}
-            >
-              ${this.generatingLinkedIn ? 'Generating...' : 'Generate Post'}
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  private renderLinkedInModal() {
-    if (!this.showLinkedInModal || !this.linkedInPost) return '';
-
-    // Get the selected ending index
-    const endingIndex = this.selectedEnding === 'question' ? 0 : this.selectedEnding === 'declarative' ? 1 : 2;
-    const fullPost = this.linkedInPost.full_post_options[endingIndex];
-
-    // Highlight [PAPER LINK] placeholder
-    const highlightedPost = fullPost.replace(
-      /\[PAPER LINK\]/g,
-      '<span class="paper-link">[PAPER LINK]</span>'
-    );
-
-    return html`
-      <div class="linkedin-modal" @click=${this.handleCloseLinkedInModal}>
-        <div class="linkedin-dialog" @click=${(e: Event) => e.stopPropagation()}>
-          <div class="linkedin-header">
-            <div class="linkedin-title">LinkedIn Post</div>
-            <button class="close-btn" @click=${this.handleCloseLinkedInModal}>&times;</button>
-          </div>
-
-          <div class="post-preview" .innerHTML=${highlightedPost}></div>
-
-          <div class="ending-selector">
-            <div class="ending-label">Select Ending:</div>
-            <div class="ending-options">
-              <button
-                class="ending-option ${this.selectedEnding === 'question' ? 'selected' : ''}"
-                @click=${() => this.handleSelectEnding('question')}
-              >
-                Question
-              </button>
-              <button
-                class="ending-option ${this.selectedEnding === 'declarative' ? 'selected' : ''}"
-                @click=${() => this.handleSelectEnding('declarative')}
-              >
-                Declarative
-              </button>
-              <button
-                class="ending-option ${this.selectedEnding === 'forward_looking' ? 'selected' : ''}"
-                @click=${() => this.handleSelectEnding('forward_looking')}
-              >
-                Forward-looking
-              </button>
-            </div>
-          </div>
-
-          <div class="linkedin-actions">
-            <button class="copy-btn" @click=${this.handleCopyPost}>
-              Copy to Clipboard
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
   render() {
     if (!this.sessionId) {
       return html`
@@ -1990,19 +1545,6 @@ export class ConceptsTab extends LitElement {
         ${this.renderAssessment()}
         ${this.renderSection('Open Questions', this.insights.open_questions)}
 
-        <!-- LinkedIn Draft Post button (admin-only feature) -->
-        ${authService.getState().user?.isAdmin ? html`
-        <div class="linkedin-action">
-          <button
-            class="share-to-linkedin-btn ${this.generatingFocus || this.generatingLinkedIn ? 'loading' : ''}"
-            @click=${this.handleGenerateLinkedIn}
-            ?disabled=${this.generatingFocus || this.generatingLinkedIn}
-          >
-            ${this.generatingFocus ? 'Analyzing...' : this.generatingLinkedIn ? 'Generating...' : 'Draft Post'}
-          </button>
-        </div>
-        ` : ''}
-
         ${this.zoteroSaveSuccess ? html`
           <div class="save-success">
             ✓ Insights saved to Zotero as a note!
@@ -2093,8 +1635,6 @@ export class ConceptsTab extends LitElement {
           </div>
         ` : ''}
 
-        ${this.renderLinkedInFocusDialog()}
-        ${this.renderLinkedInModal()}
         ${this.renderNotionModal()}
       </div>
     `;

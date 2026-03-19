@@ -29,7 +29,7 @@ class MetadataService:
     - Structured metadata schema
     """
 
-    def __init__(self, contact_email: str = "support@scholia.app"):
+    def __init__(self, contact_email: str = "https://github.com/bwaxse/scholia-oss/issues"):
         """
         Initialize metadata service.
 

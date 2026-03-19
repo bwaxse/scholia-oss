@@ -1,6 +1,6 @@
 import type { Session, SessionFull, ZoteroItem, DuplicateCheckResponse, MessageEvaluation } from '../types/session';
 import { authService } from './auth';
-import type { QueryRequest, QueryResponse, LinkedInPostResponse } from '../types/query';
+import type { QueryRequest, QueryResponse } from '../types/query';
 import type { OutlineItem } from '../types/pdf';
 import type {
   NotionProjectList,
@@ -541,61 +541,6 @@ class ApiClient {
       throw new ApiError(
         `Failed to save insights to Zotero: ${response.statusText}`,
         response.status
-      );
-    }
-
-    return response.json();
-  }
-
-  /**
-   * Generate one-sentence focus for LinkedIn post (Step 1 of 2)
-   */
-  async generateLinkedInPostFocus(sessionId: string, model: string = 'gemini-flash'): Promise<{focus: string}> {
-    const params = new URLSearchParams();
-    params.append('model', model);
-
-    const response = await this._fetch(
-      `${this.baseUrl}/sessions/${sessionId}/linkedin-post/focus?${params}`,
-      {
-        method: 'POST'
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new ApiError(
-        errorData.detail || `Failed to generate post focus: ${response.statusText}`,
-        response.status,
-        errorData
-      );
-    }
-
-    return response.json();
-  }
-
-  /**
-   * Generate LinkedIn post from session insights (Step 2 of 2)
-   */
-  async generateLinkedInPost(sessionId: string, model: string = 'gemini-flash', focus?: string): Promise<LinkedInPostResponse> {
-    const params = new URLSearchParams();
-    params.append('model', model);
-    if (focus) {
-      params.append('focus', focus);
-    }
-
-    const response = await this._fetch(
-      `${this.baseUrl}/sessions/${sessionId}/linkedin-post?${params}`,
-      {
-        method: 'POST'
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new ApiError(
-        errorData.detail || `Failed to generate LinkedIn post: ${response.statusText}`,
-        response.status,
-        errorData
       );
     }
 

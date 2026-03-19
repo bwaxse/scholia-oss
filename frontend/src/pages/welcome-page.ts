@@ -665,7 +665,7 @@ export class WelcomePage extends LitElement {
       return html`
         <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
           <a href="/manifesto" @click=${() => this.menuOpen = false}>Manifesto</a>
-          <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
+          
           <a href="/" @click=${() => this.menuOpen = false}>Open App</a>
         </div>
       `;
@@ -674,9 +674,9 @@ export class WelcomePage extends LitElement {
     return html`
       <div class="mobile-menu ${this.menuOpen ? 'open' : ''}">
         <a href="/manifesto" @click=${() => this.menuOpen = false}>Manifesto</a>
-        <a href="/pricing" @click=${() => this.menuOpen = false}>Pricing</a>
-        <a href="/auth?mode=signin" @click=${() => this.menuOpen = false}>Sign in</a>
-        <a href="/auth?mode=signup" @click=${() => this.menuOpen = false}>Sign up</a>
+        
+        
+        
       </div>
     `;
   }
@@ -691,19 +691,15 @@ export class WelcomePage extends LitElement {
     if (isAuthenticated && user) {
       return html`
         <a href="/manifesto" class="header-link">Manifesto</a>
-        <a href="/pricing" class="header-link">Pricing</a>
         <div class="header-status">
           <a href="/" class="header-btn">Open App</a>
-          ${user.picture ? html`<img src="${user.picture}" alt="" class="user-avatar" />` : ''}
         </div>
       `;
     }
 
     return html`
       <a href="/manifesto" class="header-link">Manifesto</a>
-      <a href="/pricing" class="header-link">Pricing</a>
-      <a href="/auth?mode=signin" class="header-link">Sign in</a>
-      <a href="/auth?mode=signup" class="header-btn">Sign up</a>
+      <a href="/" class="header-btn">Open App</a>
     `;
   }
 
@@ -718,7 +714,7 @@ export class WelcomePage extends LitElement {
     }
 
     return html`
-      <a href="/auth?mode=signup" class="btn btn-primary">Get Started</a>
+      <a href="/" class="btn btn-primary">Open App</a>
       ${includeSecondary ? html`<a href="/manifesto" class="btn btn-secondary">Read Manifesto</a>` : ''}
     `;
   }
@@ -888,7 +884,6 @@ export class WelcomePage extends LitElement {
       <footer>
         <p>
           <a href="/manifesto">Manifesto</a> |
-          <a href="/pricing">Pricing</a> |
           <span class="tagline">Built for researchers who think deeply about what they read.</span>
         </p>
       </footer>
