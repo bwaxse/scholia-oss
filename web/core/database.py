@@ -74,7 +74,11 @@ class DatabaseManager:
                         await conn.execute(migration_sql)
                         logger.info(f"Applied migration: {migration_file.name}")
                     except Exception as e:
-                        # Log but don't fail if migration already applied
+                        # Rollback any aborted transaction before continuing
+                        try:
+                            await conn.execute("ROLLBACK")
+                        except Exception:
+                            pass
                         logger.warning(f"Migration {migration_file.name} skipped or failed: {e}")
 
             # Execute schema (after migrations)

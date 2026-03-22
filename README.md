@@ -6,26 +6,15 @@ AI-powered research paper companion. Upload PDFs, ask questions, extract insight
 
 ## Quick Start
 
-### With Docker (recommended)
-
-1. Clone this repo
-2. Copy `.env.example` to `.env` and add your API key:
-   ```
-   ANTHROPIC_API_KEY=sk-ant-...
-   ```
-3. Start the app:
-   ```bash
-   docker-compose up
-   ```
-4. Open http://localhost:8000
-
-### Manual Setup
-
 **Requirements:** Python 3.11+, Node 20+, PostgreSQL 16+
 
-1. Start PostgreSQL and create a database:
+1. Clone this repo and start PostgreSQL:
    ```bash
+   brew services start postgresql@16
    createdb scholia
+   psql postgres -c "CREATE USER scholia WITH PASSWORD 'scholia';"
+   psql postgres -c "GRANT ALL PRIVILEGES ON DATABASE scholia TO scholia;"
+   psql postgres -c "ALTER DATABASE scholia OWNER TO scholia;"
    ```
 
 2. Install backend dependencies:
@@ -35,10 +24,13 @@ AI-powered research paper companion. Upload PDFs, ask questions, extract insight
 
 3. Build the frontend:
    ```bash
-   cd frontend && npm install && npm run build
+   cd frontend && npm install && npm run build && cd ..
    ```
 
-4. Create `.env` from `.env.example` and fill in your keys.
+4. Copy `.env.example` to `.env` and add your API key:
+   ```
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
 
 5. Start the server:
    ```bash
@@ -46,6 +38,14 @@ AI-powered research paper companion. Upload PDFs, ask questions, extract insight
    ```
 
 6. Open http://localhost:8000
+
+### With Docker
+
+If you prefer Docker:
+```bash
+cp .env.example .env  # add your ANTHROPIC_API_KEY
+docker compose up
+```
 
 ## Features
 
