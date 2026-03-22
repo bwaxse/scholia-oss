@@ -39,6 +39,8 @@ AI-powered research paper companion. Upload PDFs, ask questions, extract insight
 
 6. Open http://localhost:8000
 
+> **Note:** If the UI appears zoomed in, reset your browser zoom to 100% (`Cmd+0` on Mac).
+
 ### With Docker
 
 If you prefer Docker:

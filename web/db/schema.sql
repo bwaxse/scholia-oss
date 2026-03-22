@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     file_size_bytes INTEGER,
     label TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    deleted_at TIMESTAMPTZ  -- Soft delete: NULL = active, timestamp = deleted
 );
 
 -- Conversations table: stores chat messages between user and Claude
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS conversations (
     page_number INTEGER,
     model TEXT,
     timestamp TIMESTAMPTZ DEFAULT NOW(),
-    deleted_at TIMESTAMPTZ
+    deleted_at TIMESTAMPTZ  -- Soft delete: NULL = visible, timestamp = deleted
 );
 
 -- Flags table: user-flagged exchanges for later review
